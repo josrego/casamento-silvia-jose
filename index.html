@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casamento &amp; Batismo - Sílvia &amp; José &amp; João</title>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    oklch(97% 0.010 78);
+      --cream-dk: oklch(93% 0.015 78);
+      --gold:     oklch(68% 0.10  78);
+      --gold-lt:  oklch(85% 0.07  78);
+      --ink:      oklch(20% 0.015 60);
+      --ink-mid:  oklch(38% 0.015 60);
+      --red-zone: rgba(220, 60, 60, 0.22);
+      --blue-zone:rgba(60, 130, 220, 0.22);
+    }
+
+    body {
+      background: oklch(88% 0.012 78);
+      font-family: 'Source Sans 3', sans-serif;
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px 60px;
+    }
+
+    /* ── FLYER CARD ── */
+    .flyer {
+      width: 680px;
+      background: var(--cream);
+      border: 1px solid oklch(88% 0.018 78);
+      box-shadow: 0 8px 48px oklch(20% 0.02 60 / 0.18);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      position: relative;
+      height: 320px;
+      overflow: hidden;
+    }
+    .header-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
+      filter: grayscale(1) brightness(1);
+    }
+    .header-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        oklch(15% 0.02 60 / 0.08) 0%,
+        oklch(15% 0.02 60 / 0.55) 100%
+      );
+    }
+    .header-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 28px 40px 32px;
+      text-align: center;
+    }
+    .header-eyebrow {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-lt);
+      margin-bottom: 10px;
+    }
+    .header-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 58px;
+      font-weight: 300;
+      line-height: 1.05;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+    .header-names em {
+      font-style: italic;
+    }
+    .header-ampersand {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold-lt);
+      padding: 0 12px;
+    }
+    .header-date {
+      margin-top: 14px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: oklch(92% 0.015 78);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 40px;
+      margin: 28px 0 0;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.45;
+    }
+    .divider-ornament {
+      color: var(--gold);
+      font-size: 18px;
+      font-family: 'Cormorant Garamond', serif;
+      opacity: 0.7;
+    }
+
+    /* ── BODY CONTENT ── */
+    .body {
+      padding: 0 40px 36px;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      margin-top: 28px;
+    }
+
+    /* ── INFO ROW ── */
+    .info-row {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      align-items: flex-start;
+    }
+    .info-card {
+      flex: 1;
+      background: var(--cream-dk);
+      border: 1px solid oklch(88% 0.018 78);
+      padding: 18px 22px;
+      text-align: center;
+    }
+    .info-card-label {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .info-card-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .info-card-sub {
+      font-size: 11px;
+      color: var(--ink-mid);
+      margin-top: 4px;
+      font-weight: 300;
+    }
+    .info-card-photo {
+      margin-top: auto;
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      border: 1px solid oklch(88% 0.018 78);
+    }
+
+    /* ── WARNING BOX ── */
+    .warning {
+      margin-top: 24px;
+      border: 1.5px solid oklch(55% 0.12 50);
+      background: oklch(96% 0.018 55);
+      padding: 14px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .warning-icon {
+      font-size: 22px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .warning-text {
+      font-size: 13px;
+      line-height: 1.55;
+      color: oklch(28% 0.06 50);
+    }
+    .warning-text strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* ── MAP ── */
+    .map-section {
+      margin-top: 28px;
+    }
+    .map-wrap {
+      position: relative;
+      width: 100%;
+      border: 1px solid oklch(85% 0.018 78);
+      overflow: hidden;
+      line-height: 0;
+    }
+    .map-img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── MAP LEGEND ── */
+    .map-legend {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--ink-mid);
+    }
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .legend-rect {
+      width: 18px;
+      height: 12px;
+      flex-shrink: 0;
+      border-radius: 2px;
+    }
+    .dot-green  { background: #22b14c; border: 2px solid #18893b; }
+    .dot-blue   { background: rgba(60,130,220,0.35); border: 2px solid #3c82dc; }
+    .dot-red    { background: rgba(220,60,60,0.30); border: 2px solid #dc3c3c; }
+    .dot-bluecircle { background: #3c82dc; border: 2px solid #2563c0; }
+
+    /* ── PARKING GUIDE ── */
+    .parking-guide {
+      margin-top: 28px;
+    }
+    .parking-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .parking-header-line {
+      flex: 1;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.4;
+    }
+    .parking-header-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .parking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .park-card {
+      border: 1px solid oklch(87% 0.018 78);
+      background: var(--cream-dk);
+      padding: 16px 18px;
+    }
+    .park-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .park-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .park-icon-free  { background: #3c82dc; color: #fff; }
+    .park-icon-paid  { background: oklch(68% 0.10 78); color: #fff; }
+    .park-icon-no    { background: #dc3c3c; color: #fff; font-size: 16px; }
+    .park-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+    .park-card-body {
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--ink-mid);
+    }
+    .park-card-body strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .park-card.no-park {
+      grid-column: 1 / -1;
+      background: oklch(96% 0.018 18);
+      border-color: oklch(75% 0.10 18);
+    }
+    .park-card.no-park .park-card-body {
+      color: oklch(35% 0.08 18);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 0;
+      border-top: none;
+      padding: 20px 40px 24px;
+      text-align: center;
+      background: var(--cream-dk);
+    }
+    .footer-text {
+      font-size: 15px;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    .footer-heart {
+      color: var(--gold);
+      font-size: 16px;
+      display: block;
+      margin-bottom: 6px;
+    }
+    /* ── PHOTOS SECTION ── */
+    .photos-section {
+      padding: 28px 40px 32px;
+      text-align: center;
+      border-top: 1px solid oklch(88% 0.018 78);
+      margin-top: 28px;
+    }
+    .photos-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 32px;
+      background: var(--gold);
+      color: var(--cream);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: filter 0.2s;
+    }
+    .photos-btn:hover {
+      filter: brightness(0.88);
+    }
+    .photos-btn-icon {
+      font-size: 16px;
+    }
+    .photos-hint {
+      margin-top: 8px;
+      margin-bottom: 0;
+      font-size: 10.5px;
+      color: var(--ink-mid);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── RESPONSIVE (tablet/mobile only) ── */
+    @media (max-width: 900px) {
+      body {
+        padding: 24px 12px 40px;
+      }
+      .flyer {
+        width: 100%;
+      }
+      .header {
+        height: 300px;
+      }
+      .header-text {
+        padding: 24px 24px 28px;
+      }
+      .header-names {
+        font-size: 48px;
+      }
+      .header-date {
+        letter-spacing: 0.14em;
+      }
+      .body,
+      .footer,
+      .photos-section,
+      .divider {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .info-row {
+        gap: 12px;
+      }
+      .info-card {
+        padding: 14px 14px;
+      }
+      .parking-grid {
+        grid-template-columns: 1fr;
+      }
+      .park-card.no-park {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px 6px 24px;
+      }
+      .header {
+        height: 250px;
+      }
+      .header-text {
+        padding: 16px 14px 18px;
+      }
+      .header-eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.16em;
+      }
+      .header-names {
+        font-size: 38px;
+        line-height: 1.08;
+      }
+      .header-ampersand {
+        padding: 0 6px;
+      }
+      .header-date {
+        margin-top: 10px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+      .body,
+      .footer,
+      .photos-section,
+      .divider {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .section-title {
+        margin-top: 22px;
+      }
+      .info-row {
+        flex-direction: column;
+        margin-top: 14px;
+      }
+      .info-card {
+        width: 100%;
+      }
+      .info-card-value {
+        font-size: 24px;
+      }
+      .warning {
+        margin-top: 18px;
+        padding: 12px;
+        gap: 10px;
+      }
+      .warning-icon {
+        font-size: 19px;
+      }
+      .warning-text {
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .map-legend {
+        gap: 8px 10px;
+      }
+      .legend-item {
+        font-size: 10.5px;
+      }
+      .parking-guide {
+        margin-top: 22px;
+      }
+      .park-card {
+        padding: 12px;
+      }
+      .park-card-head {
+        margin-bottom: 8px;
+      }
+      .park-card-title {
+        font-size: 16px;
+      }
+      .park-card-body {
+        font-size: 11px;
+        line-height: 1.5;
+      }
+      .photos-section {
+        padding-top: 20px;
+        padding-bottom: 22px;
+        margin-top: 20px;
+      }
+      .photos-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 14px;
+        font-size: 12px;
+      }
+      .photos-hint {
+        font-size: 10px;
+      }
+      .footer {
+        padding-top: 16px;
+        padding-bottom: 18px;
+      }
+      .footer-text {
+        font-size: 10.5px;
+        line-height: 1.55;
+      }
+    }
+  </style>
+
+  <!-- Bundler thumbnail -->
+  <template id="__bundler_thumbnail" data-bg-color="#f5efe6">
+    <svg viewBox="0 0 680 900" xmlns="http://www.w3.org/2000/svg">
+      <!-- Church photo placeholder -->
+      <rect x="0" y="0" width="680" height="300" fill="#8a9baa"/>
+      <!-- Gradient overlay -->
+      <rect x="0" y="150" width="680" height="150" fill="url(#grad)"/>
+      <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1a1a18" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#1a1a18" stop-opacity="0.6"/>
+        </linearGradient>
+      </defs>
+      <!-- Names -->
+      <text x="340" y="240" text-anchor="middle" font-size="52" fill="white" font-style="italic" font-family="Georgia, serif">Sílvia &amp; José</text>
+      <text x="340" y="275" text-anchor="middle" font-size="14" fill="#d4b87a" font-family="sans-serif" letter-spacing="4">13 DE JUNHO DE 2026 · 13H00</text>
+      <!-- Info cards -->
+      <rect x="40" y="320" width="185" height="70" fill="#ede8e0" rx="2"/>
+      <rect x="247" y="320" width="185" height="70" fill="#ede8e0" rx="2"/>
+      <rect x="454" y="320" width="185" height="70" fill="#ede8e0" rx="2"/>
+      <!-- Map block -->
+      <rect x="40" y="430" width="600" height="240" fill="#c8d8e8" rx="2"/>
+      <rect x="40" y="430" width="600" height="240" fill="#e8c8c8" rx="2" opacity="0.5"/>
+      <!-- Parking cards -->
+      <rect x="40" y="700" width="288" height="80" fill="#ede8e0" rx="2"/>
+      <rect x="352" y="700" width="288" height="80" fill="#ede8e0" rx="2"/>
+      <rect x="40" y="798" width="600" height="60" fill="#f5e8e8" rx="2"/>
+    </svg>
+  </template>
+</head>
+<body>
+
+<article class="flyer">
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <img class="header-img" src="uploads/header-family.jpeg" alt="Família dos noivos" />
+    <div class="header-overlay"></div>
+    <div class="header-text">
+      <h1 class="header-names">
+        <em>Sílvia</em>
+        <span class="header-ampersand">&amp;</span>
+        <em>José</em>
+      </h1>\
+      <h1 class="header-names">
+        <em>João</em>
+      </h1>
+      
+      <p class="header-date">13 de Junho de 2026 &nbsp;·&nbsp; 13h00</p>
+    </div>
+  </header>
+
+  <!-- ── BODY ── -->
+  <div class="body">
+
+    <!-- Info cards -->
+    <div class="info-row">
+      <div class="info-card">
+        <p class="info-card-label">Celebração</p>
+        <p class="info-card-value" style="font-size:16px; padding-top:4px; line-height:1.4;">Igreja de Nossa Senhora<br>da Apresentação (Vera Cruz)</p> 
+        <p class="info-card-sub">Aveiro</p>
+        <img class="info-card-photo" src="uploads/hero-bg.jpg" alt="Igreja de Nossa Senhora da Apresentação, Aveiro" />
+        <p class="photos-hint"><a href="https://maps.app.goo.gl/o6nKz4KMGBroa6J67" target="_blank" rel="noopener">Localização</a></p>
+      </div>
+      <div class="info-card">
+        <p class="info-card-label">Copo d'Água</p>
+        <p class="info-card-value" style="font-size:16px; padding-top:4px; line-height:1.4;">Quinta da Couceira</p>
+        <p class="info-card-sub">Cadima, Cantanhede</p>
+        <img class="info-card-photo" style="object-position: center 75%" src="uploads/quinta.jpg" alt="Quinta da Couceira, Cantanhede" />
+        <p class="photos-hint"><a href="https://maps.app.goo.gl/yMjWxdBFM5CKwUvR7" target="_blank" rel="noopener">Localização</a></p>
+      </div>
+    </div>
+
+    <!-- Warning -->
+    <div class="warning">
+      <div class="warning-icon">⚠️</div>
+      <div class="warning-text">
+        <strong>Notas importantes sobre o estacionamento</strong>
+        Sugerimos chegar com alguma antecedência, pois o estacionamento na zona é limitado.
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="map-section">
+      <p class="section-title">Localização &amp; Estacionamento</p>
+      <div class="map-wrap">
+        <img class="map-img" src="uploads/Design sem nome.png" alt="Mapa de estacionamento — Igreja de Nossa Senhora da Apresentação, Aveiro" />
+      </div>
+
+      <!-- Legend -->
+      <div class="map-legend">
+        <div class="legend-item">
+          <div class="legend-dot dot-green"></div>
+          <span>Igreja (local da cerimónia)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-rect" style="background:rgba(60,130,220,0.32); border:2px solid #3c82dc;"></div>
+          <span>Estacionamento gratuito</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-rect" style="background:rgba(220,60,60,0.28); border:2px solid #dc3c3c;"></div>
+          <span>Zona exclusiva para residentes — não estacionar</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot dot-bluecircle"></div>
+          <span>Parque Rossio (pago)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider" style="padding: 0; margin-top: 28px;">
+      <div class="divider-line"></div>
+      <span class="divider-ornament">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Parking guide -->
+    <div class="parking-guide">
+      <div class="parking-header">
+        <div class="parking-header-line"></div>
+        <span class="parking-header-label">Guia de Estacionamento</span>
+        <div class="parking-header-line"></div>
+      </div>
+
+      <div class="parking-grid">
+
+        <div class="park-card">
+          <div class="park-card-head">
+            <div class="park-icon park-icon-free">P</div>
+            <div class="park-card-title">Estacionamento Gratuito</div>
+          </div>
+          <div class="park-card-body">
+            A zona azul no mapa corresponde ao <strong>estacionamento - Ponte dos Botirões</strong> e arredores — estacionamento gratuito disponível ao longo da canal. Ideal para quem chega mais cedo.
+          </div>
+          <p class="photos-hint"><a href="https://maps.app.goo.gl/epNwN6qPZSKmXh5G6" target="_blank" rel="noopener">Localização</a></p>
+        </div>
+
+        <div class="park-card">
+          <div class="park-card-head">
+            <div class="park-icon park-icon-paid">P</div>
+            <div class="park-card-title">Parque Rossio (Pago)</div>
+          </div>
+          <div class="park-card-body">
+            O <strong>Parque do Rossio</strong> é um parque coberto pago situado junto ao Museu de Arte Nova. Assinalado com o círculo azul no mapa. Conveniente e próximo da igreja.
+          </div>
+          <p class="photos-hint"><a href="https://maps.app.goo.gl/QfTXEr99HEe6rLcD9" target="_blank" rel="noopener">Localização</a></p>
+        </div>
+
+        <div class="park-card">
+          <div class="park-card-head">
+            <div class="park-icon park-icon-paid">P</div>
+            <div class="park-card-title">Parque do Forum Aveiro (Pago)</div>
+          </div>
+          <div class="park-card-body">
+            O <strong>Parque do Forum Aveiro</strong> é um parque coberto pago situado por baixo do forum de Aveiro.
+          </div>
+          <p class="photos-hint"><a href="https://maps.app.goo.gl/EiViqLYmQMw8PJG78" target="_blank" rel="noopener">Localização</a></p>
+        </div>
+
+        <div class="park-card no-park">
+          <div class="park-card-head">
+            <div class="park-icon park-icon-no">✕</div>
+            <div class="park-card-title">Zona de Estacionamento Proibido</div>
+          </div>
+          <div class="park-card-body">
+            A área a <strong>vermelho no mapa</strong>, em redor da igreja, é exclusivamente reservada a residentes.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- ── PHOTOS BUTTON SECTION ── -->
+  <div class="photos-section" id="photos-section">
+    <a class="photos-btn" id="photos-link" href="https://drive.google.com/drive/folders/10vQuklOBbqnp2xXMhftm_rJtrDMwVFQH?usp=sharing" target="_blank" rel="noopener">
+      <span class="photos-btn-icon">📷</span>
+      <span id="photos-label">Partilhar Fotografias do Casamento</span>
+    </a>
+    <p class="photos-hint">Clique para aceder à pasta de partilha de fotos</p>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <span class="footer-heart">♡</span>
+    <p class="footer-text">
+      Igreja de Nossa Senhora da Apresentação · Aveiro<br>
+      13 de Junho de 2026 · 13h00
+    </p>
+  </footer>
+
+</article>
+
+<div id="tweaks-root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "showPhotosBtn": true,
+  "photosBtnLabel": "Partilhar Fotografias do Casamento",
+  "photosBtnColor": "#c9a96e",
+  "photosHint": "Clique para aceder à pasta de partilha de fotos"
+}/*EDITMODE-END*/;
+
+function WeddingTweaks() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    // Show/hide button section
+    const section = document.getElementById('photos-section');
+    if (section) section.style.display = tweaks.showPhotosBtn ? '' : 'none';
+
+    // Label
+    const label = document.getElementById('photos-label');
+    if (label) label.textContent = tweaks.photosBtnLabel;
+
+    // Hint
+    const hint = section && section.querySelector('.photos-hint');
+    if (hint) hint.textContent = tweaks.photosHint;
+
+    // Color
+    const btn = document.getElementById('photos-link');
+    if (btn) btn.style.background = tweaks.photosBtnColor;
+  }, [tweaks]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Botão de Fotografias">
+        <TweakToggle label="Mostrar botão" value={tweaks.showPhotosBtn} onChange={v => setTweak('showPhotosBtn', v)} />
+        <TweakText label="Texto do botão" value={tweaks.photosBtnLabel} onChange={v => setTweak('photosBtnLabel', v)} />
+        <TweakText label="Texto de ajuda" value={tweaks.photosHint} onChange={v => setTweak('photosHint', v)} />
+        <TweakColor label="Cor do botão" value={tweaks.photosBtnColor} onChange={v => setTweak('photosBtnColor', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<WeddingTweaks />);
+</script>
+
+</body>
+</html>
